@@ -4,6 +4,7 @@ import org.logisticaentregas.dao.ClienteDAO;
 import org.logisticaentregas.util.Erros;
 import org.logisticaentregas.view.View;
 
+import java.sql.SQLException;
 import java.util.Scanner;
 
 public class Service {
@@ -20,7 +21,13 @@ public class Service {
                     opcao = Erros.entradaInt();
                     switch (opcao){
                         case 1 ->{ //cliente
-                            ClienteDAO.cadastrarCliente(cliente);
+                            var cliente = Cadastro.cadastrarCliente(sc);
+                            try{
+                                ClienteDAO.cadastrarCliente(cliente);
+                            } catch (SQLException e){
+                                e.printStackTrace();
+                            }
+
                         }
                         case 2 ->{ //motorista
 

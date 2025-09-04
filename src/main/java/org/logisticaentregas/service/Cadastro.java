@@ -16,6 +16,12 @@ public class Cadastro {
         View.texto("CPF:");
         String cpf = sc.nextLine();
         View.texto("Endereço:");
-        String endereco = sc.
+        String endereco = sc.nextLine();
+        View.texto("Cidade:");
+        String cidade = sc.nextLine();
+        View.texto("Estado:");
+        String estado = sc.nextLine();
+
+        var client = new Cliente(nome, cpf, endereco, cidade, estado);
     }
 }

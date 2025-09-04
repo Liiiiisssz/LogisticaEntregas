@@ -17,6 +17,14 @@ public class Cliente {
         this.estado = estado;
     }
 
+    public Cliente(String nome, String cpf, String endereco, String cidade, String estado) {
+        this.nome = nome;
+        this.cpf = cpf;
+        this.endereco = endereco;
+        this.cidade = cidade;
+        this.estado = estado;
+    }
+
     @Override
     public String toString() {
         return "CLIENTE" +
