@@ -1,7 +1,6 @@
 package org.logisticaentregas.service;
 
 import org.logisticaentregas.dao.*;
-import org.logisticaentregas.model.Historico;
 import org.logisticaentregas.util.Erros;
 import org.logisticaentregas.view.View;
 
@@ -82,31 +81,30 @@ public class Service {
                                 e.printStackTrace();
                             }
                         }
-                        case 4 ->{ //listar entregas
-
-                        }
+                        case 4 -> //listar entregas
+                            Buscar.listarEntregas();
                     }
                 }
                 case 4 ->{ //gerar relatorios
                     View.menuRelatorio();
                     opcao = Erros.entradaInt();
                     switch (opcao){
-                        case 1 ->{ //total de entregas
+                        case 1 -> //total de entregas
+                            Relatorio.totalEntregas();
 
-                        }
-                        case 2 ->{ //clientes com mais pedidos
+                        case 2 -> //clientes com mais pedidos
+                            Relatorio.volumeTotal();
 
-                        }
-                        case 3 ->{ //pedidos pendentes
+                        case 3 -> //pedidos pendentes
+                            Relatorio.pendentesEstado();
 
-                        }
                         case 4 ->{ //entregas atrasadas
-
+                            Relatorio.atrasadasCidade();
                         }
                     }
                 }
                 case 5 ->{ //buscar pedido
-
+                    Buscar.buscarPedido(sc);
                 }
                 case 6 ->{ //cancelar pedido
 

@@ -1,5 +1,6 @@
 package org.logisticaentregas.dao;
 
+import org.logisticaentregas.model.Cliente;
 import org.logisticaentregas.model.Entrega;
 import org.logisticaentregas.model.Motorista;
 import org.logisticaentregas.model.Pedido;
@@ -7,7 +8,6 @@ import org.logisticaentregas.util.Conexao;
 
 import java.sql.*;
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,27 +48,45 @@ public class EntregaDAO {
 
     public static List<Entrega> listarEntregas(){
         List<Entrega> entregas = new ArrayList<>();
-        List<Pedido> pedidos = new ArrayList<>();
-        List<Motorista> motoristas = new ArrayList<>();
+        List<Pedido> pedidos = PedidoDAO.listarPedidos();
+        List<Motorista> motoristas = MotoristaDAO.listarMotoristas();
 
-        Pedido pedido;
-        Motorista motorista;
+        Pedido pedido = null;
+        Motorista motorista = null;
 
         String query = """
                     SELECT
-                    id, pedido_id, motorista_id, data_saida, data_entrega, status_entrega
-                    FROM entrega
+                        e.id AS entrega_id, 
+                        e.data_saida, e.data_entrega, e.status_entrega,
+                        p.id AS pedido_id,
+                        c.id AS cliente_id,
+                        c.nome AS cliente_nome,
+                        c.cpf, c.endereco, c.cidade, c.estado,
+                        m.id AS motorista_id
+                    FROM entrega e
+                    JOIN pedido p ON e.pedido_id = p.id
+                    JOIN cliente c ON p.cliente_id = c.id
+                    JOIN motorista m ON e.motorista_id = m.id;
                     """;
         try(Connection conn = Conexao.conectar();
             PreparedStatement stmt = conn.prepareStatement(query)){
 
             ResultSet rs = stmt.executeQuery();
             while(rs.next()){
-                int id = rs.getInt("id");
+                int id = rs.getInt("entrega_id");
                 int idPedido = rs.getInt("pedido_id");
                 for(Pedido p : pedidos){
                     if(p.getId() == idPedido){
                         pedido = p;
+
+                        var cliente = new Cliente();
+                        cliente.setId(rs.getInt("cliente_id"));
+                        cliente.setNome(rs.getString("cliente_nome"));
+                        cliente.setCpf(rs.getString("cpf"));
+                        cliente.setEndereco(rs.getString("endereco"));
+                        cliente.setCidade(rs.getString("cidade"));
+                        cliente.setEstado(rs.getString("estado"));
+                        pedido.setCliente(cliente);
                         break;
                     }
                 }
@@ -80,12 +98,14 @@ public class EntregaDAO {
                     }
                 }
                 Date dataS = rs.getDate("data_saida");
-                LocalDate dataSaida = LocalDate.ofInstant(dataS);
+                LocalDate dataSaida = dataS.toLocalDate();
 
-                Date dataEntrega = rs.getDate("data_entrega");
-                String status = rs.getString("status_entrega");
+                Date dataE = rs.getDate("data_entrega");
+                LocalDate dataEntrega = dataE.toLocalDate();
 
-                var entrega = new Entrega(id);
+                Entrega.StatusEntrega status = Entrega.StatusEntrega.valueOf(rs.getString("status_entrega"));
+
+                var entrega = new Entrega(id, pedido, motorista, dataSaida, dataEntrega, status);
                 entregas.add(entrega);
             }
         } catch (SQLException e){

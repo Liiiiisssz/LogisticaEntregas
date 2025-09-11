@@ -1,7 +1,10 @@
 package org.logisticaentregas.service;
 
 import org.logisticaentregas.dao.EntregaDAO;
+import org.logisticaentregas.dao.PedidoDAO;
 import org.logisticaentregas.model.Entrega;
+import org.logisticaentregas.model.Pedido;
+import org.logisticaentregas.model.PedidosPendentes;
 import org.logisticaentregas.util.Erros;
 import org.logisticaentregas.view.View;
 
@@ -39,5 +42,19 @@ public class Edicao {
         entrega.setStatusEntrega(Erros.statusEntrega());
 
         return entrega;
+    }
+
+    public static void cancelarPedido(Scanner sc){
+        List<Pedido> listPedido = PedidoDAO.listarPedidos();
+        boolean valido = false;
+
+        View.texto(" _____________________");
+        View.cabecalho("|   CANCELAR PEDIDO   |");
+        View.cabecalho("|_____________________|");
+
+        while(!valido){
+            View.texto("ID do pedido:");
+
+        }
     }
 }

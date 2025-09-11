@@ -8,6 +8,9 @@ public class Cliente {
     private String cidade;
     private String estado;
 
+    public Cliente(){
+    }
+
     public Cliente(int id, String nome, String cpf, String endereco, String cidade, String estado) {
         this.id = id;
         this.nome = nome;

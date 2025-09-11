@@ -1,6 +1,5 @@
 package org.logisticaentregas.dao;
 
-import org.logisticaentregas.model.Cliente;
 import org.logisticaentregas.model.Motorista;
 import org.logisticaentregas.util.Conexao;
 

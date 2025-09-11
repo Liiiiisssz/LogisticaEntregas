@@ -12,7 +12,7 @@ public class Pedido {
     private StatusPedido statusPedido;
 
     public enum StatusPedido{
-        EM_ROTA,
+        PENDENTE,
         ENTREGUE,
         CANCELADO
     }
@@ -20,6 +20,14 @@ public class Pedido {
     public Pedido(int id, Cliente cliente, LocalDate data, double volume, double peso, StatusPedido statusPedido) {
         this.id = id;
         this.cliente = cliente;
+        this.data = data;
+        this.volume = volume;
+        this.peso = peso;
+        this.statusPedido = statusPedido;
+    }
+
+    public Pedido(int id, LocalDate data, double volume, double peso, StatusPedido statusPedido) {
+        this.id = id;
         this.data = data;
         this.volume = volume;
         this.peso = peso;

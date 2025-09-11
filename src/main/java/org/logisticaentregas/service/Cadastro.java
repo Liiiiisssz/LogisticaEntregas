@@ -8,7 +8,6 @@ import org.logisticaentregas.model.*;
 import org.logisticaentregas.util.Erros;
 import org.logisticaentregas.view.View;
 
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -86,7 +85,7 @@ public class Cadastro {
         View.texto("Peso do pedido:");
         double peso = Erros.entradaDouble();
         View.texto("Status do pedido:");
-        View.texto("(Em rota, Entregue, Cancelado)");
+        View.texto("(Pendente, Entregue, Cancelado)");
         Pedido.StatusPedido status = Erros.statusPedido();
 
         var pedido = new Pedido(cliente, data, volume, peso, status);
