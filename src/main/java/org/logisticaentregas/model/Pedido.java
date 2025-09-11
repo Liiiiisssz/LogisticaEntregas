@@ -1,26 +1,41 @@
 package org.logisticaentregas.model;
 
-import java.util.Date;
+import java.sql.Date;
+import java.time.LocalDate;
 
 public class Pedido {
     private int id;
     private Cliente cliente;
-    private Date data;
+    private LocalDate data;
     private double volume;
     private double peso;
+    private StatusPedido statusPedido;
 
-    public enum Status{
-        Em_rota,
-        Entregue,
-        Cancelado
+    public enum StatusPedido{
+        EM_ROTA,
+        ENTREGUE,
+        CANCELADO
     }
 
-    public Pedido(int id, Cliente cliente, Date data, double volume, double peso) {
+    public Pedido(int id, Cliente cliente, LocalDate data, double volume, double peso, StatusPedido statusPedido) {
         this.id = id;
         this.cliente = cliente;
         this.data = data;
         this.volume = volume;
         this.peso = peso;
+        this.statusPedido = statusPedido;
+    }
+
+    public Pedido(Cliente cliente, LocalDate data, double volume, double peso, StatusPedido statusPedido) {
+        this.cliente = cliente;
+        this.data = data;
+        this.volume = volume;
+        this.peso = peso;
+        this.statusPedido = statusPedido;
+    }
+
+    public Pedido(int id){
+        this.id = id;
     }
 
     @Override
@@ -30,7 +45,8 @@ public class Pedido {
                 "\nCliente: " + cliente +
                 "\nData do pedido: " + data +
                 "\nVolume: " + volume +
-                "\nPeso: " + peso;
+                "\nPeso: " + peso +
+                "\nStatus: " + statusPedido;
     }
 
     public int getId() {
@@ -50,10 +66,11 @@ public class Pedido {
     }
 
     public Date getData() {
-        return data;
+        Date dt = Date.valueOf(data);
+        return dt;
     }
 
-    public void setData(Date data) {
+    public void setData(LocalDate data) {
         this.data = data;
     }
 
@@ -71,5 +88,14 @@ public class Pedido {
 
     public void setPeso(double peso) {
         this.peso = peso;
+    }
+
+    public String getStatusPedido() {
+        String status = String.valueOf(statusPedido);
+        return status;
+    }
+
+    public void setStatusPedido(StatusPedido statusPedido) {
+        this.statusPedido = statusPedido;
     }
 }

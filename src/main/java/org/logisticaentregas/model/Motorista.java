@@ -15,6 +15,13 @@ public class Motorista {
         this.cidade = cidade;
     }
 
+    public Motorista(String nome, String cnh, String veiculo, String cidade) {
+        this.nome = nome;
+        this.cnh = cnh;
+        this.veiculo = veiculo;
+        this.cidade = cidade;
+    }
+
     @Override
     public String toString() {
         return "MOTORISTA" +

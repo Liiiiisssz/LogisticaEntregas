@@ -1,6 +1,7 @@
 package org.logisticaentregas.service;
 
-import org.logisticaentregas.dao.ClienteDAO;
+import org.logisticaentregas.dao.*;
+import org.logisticaentregas.model.Historico;
 import org.logisticaentregas.util.Erros;
 import org.logisticaentregas.view.View;
 
@@ -19,36 +20,67 @@ public class Service {
                 case 1 ->{ //cadastro
                     View.menuCadastro();
                     opcao = Erros.entradaInt();
+
                     switch (opcao){
                         case 1 ->{ //cliente
                             var cliente = Cadastro.cadastrarCliente(sc);
                             try{
                                 ClienteDAO.cadastrarCliente(cliente);
+                                View.texto("Cliente cadastrado com sucesso!");
                             } catch (SQLException e){
                                 e.printStackTrace();
                             }
-
                         }
                         case 2 ->{ //motorista
-
+                            var motorista = Cadastro.cadastrarMotorista(sc);
+                            try{
+                                MotoristaDAO.cadastrarMotorista(motorista);
+                                View.texto("Motorista cadastrado com sucesso!");
+                            } catch (SQLException e){
+                                e.printStackTrace();
+                            }
                         }
                     }
                 }
                 case 2 ->{ //criar pedido
-
+                    var pedido = Cadastro.cadastrarPedido(sc);
+                    try{
+                        PedidoDAO.cadastrarPedido(pedido);
+                        View.texto("Pedido cadastrado com sucesso!");
+                    } catch (SQLException e){
+                        e.printStackTrace();
+                    }
                 }
                 case 3 ->{ //gerenciar entregas
                     View.menuEntrega();
                     opcao = Erros.entradaInt();
                     switch (opcao){
                         case 1 ->{ //atribuir motorista
-
+                            var entrega = Cadastro.gerarEntrega(sc);
+                            try{
+                                EntregaDAO.gerarEntrega(entrega);
+                                View.texto("Entrega gerada com sucesso!");
+                            } catch (SQLException e){
+                                e.printStackTrace();
+                            }
                         }
                         case 2 ->{ //registrar evento
-
+                            var historico = Cadastro.registrarEvento(sc);
+                            try{
+                                HistoricoDAO.registrarEvento(historico);
+                                View.texto("Evento registrado com sucesso!");
+                            } catch (SQLException e){
+                                e.printStackTrace();
+                            }
                         }
                         case 3 ->{ //atualizar status
-
+                            var entrega = Edicao.atualizarStatus(sc);
+                            try{
+                                EntregaDAO.atualizarStatus(entrega);
+                                View.texto("Status atualizado com sucesso!");
+                            } catch (SQLException e){
+                                e.printStackTrace();
+                            }
                         }
                         case 4 ->{ //listar entregas
 

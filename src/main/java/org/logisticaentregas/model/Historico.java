@@ -1,15 +1,22 @@
 package org.logisticaentregas.model;
 
-import java.util.Date;
+import java.time.LocalDate;
+import java.sql.Date;
 
 public class Historico {
     private int id;
     private Entrega entrega;
-    private Date dataEvento;
+    private LocalDate dataEvento;
     private String descricao;
 
-    public Historico(int id, Entrega entrega, Date dataEvento, String descricao) {
+    public Historico(int id, Entrega entrega, LocalDate dataEvento, String descricao) {
         this.id = id;
+        this.entrega = entrega;
+        this.dataEvento = dataEvento;
+        this.descricao = descricao;
+    }
+
+    public Historico(Entrega entrega, LocalDate dataEvento, String descricao) {
         this.entrega = entrega;
         this.dataEvento = dataEvento;
         this.descricao = descricao;
@@ -41,10 +48,11 @@ public class Historico {
     }
 
     public Date getDataEvento() {
-        return dataEvento;
+        Date dt = Date.valueOf(dataEvento);
+        return dt;
     }
 
-    public void setDataEvento(Date dataEvento) {
+    public void setDataEvento(LocalDate dataEvento) {
         this.dataEvento = dataEvento;
     }
 

@@ -71,6 +71,10 @@ public class View {
         System.out.println("\n" + texto);
     }
 
+    public static void cabecalho(String texto){
+        System.out.println(texto);
+    }
+
     public static void opcao(){
         System.out.print("> ");
     }
