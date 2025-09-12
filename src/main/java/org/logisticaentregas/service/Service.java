@@ -115,7 +115,7 @@ public class Service {
                     opcao = Erros.entradaInt();
                     switch (opcao){
                         case 1 ->{ //entrega
-
+                            Excluir.excluirEntrega(sc);
                         }
                         case 2 ->{ //cliente
 

@@ -5,6 +5,7 @@ import org.logisticaentregas.model.Entrega;
 import org.logisticaentregas.model.Motorista;
 import org.logisticaentregas.model.Pedido;
 import org.logisticaentregas.util.Conexao;
+import org.logisticaentregas.view.View;
 
 import java.sql.*;
 import java.time.LocalDate;
@@ -114,16 +115,47 @@ public class EntregaDAO {
         return entregas;
     }
 
-    public static void excluirEntrega(Entrega entrega) throws SQLException{
+    public static boolean excluirEntrega(Entrega entrega) throws SQLException{
         String query = """
                 DELETE FROM entrega
                 WHERE id = ?
                 """;
         try(Connection conn = Conexao.conectar();
             PreparedStatement stmt = conn.prepareStatement(query)){
+            conn.setAutoCommit(false);
+
+            if(validarEntrega(conn, entrega)){
+                stmt.setInt(1, entrega.getId());
+                stmt.executeUpdate();
+                conn.commit();
+                View.texto("Entrega excluida com sucesso!");
+                return true;
+            } else {
+                View.texto("Entrega não pode ser excluida.");
+                return false;
+            }
+        }
+    }
+
+    public static boolean validarEntrega(Connection conn, Entrega entrega) throws SQLException{
+        Entrega.StatusEntrega status = null;
+        String query = """
+                SELECT status_entrega
+                FROM entrega 
+                WHERE id = ?
+                """;
+        try(PreparedStatement stmt = conn.prepareStatement(query)){
 
             stmt.setInt(1, entrega.getId());
-
+            ResultSet rs = stmt.executeQuery();
+            while(rs.next()){
+                status = Entrega.StatusEntrega.valueOf(rs.getString("status_entrega"));
+            }
+        }
+        if(status == Entrega.StatusEntrega.ENTREGUE){
+            return true;
+        } else {
+            return false;
         }
     }
 }
