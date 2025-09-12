@@ -113,4 +113,17 @@ public class EntregaDAO {
         }
         return entregas;
     }
+
+    public static void excluirEntrega(Entrega entrega) throws SQLException{
+        String query = """
+                DELETE FROM entrega
+                WHERE id = ?
+                """;
+        try(Connection conn = Conexao.conectar();
+            PreparedStatement stmt = conn.prepareStatement(query)){
+
+            stmt.setInt(1, entrega.getId());
+
+        }
+    }
 }

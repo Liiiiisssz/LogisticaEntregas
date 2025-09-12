@@ -103,11 +103,12 @@ public class Service {
                         }
                     }
                 }
-                case 5 ->{ //buscar pedido
+                case 5 -> //buscar pedido
                     Buscar.buscarPedido(sc);
-                }
-                case 6 ->{ //cancelar pedido
 
+                case 6 ->{ //cancelar pedido
+                    Edicao.cancelarPedido(sc);
+                    View.texto("Pedido cancelado com sucesso!");
                 }
                 case 7 ->{ //excluir
                     View.menuExcluir();
