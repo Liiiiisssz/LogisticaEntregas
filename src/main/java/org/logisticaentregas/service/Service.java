@@ -114,15 +114,15 @@ public class Service {
                     View.menuExcluir();
                     opcao = Erros.entradaInt();
                     switch (opcao){
-                        case 1 ->{ //entrega
+                        case 1 -> //entrega
                             Excluir.excluirEntrega(sc);
-                        }
-                        case 2 ->{ //cliente
 
-                        }
-                        case 3 ->{ //motorista
+                        case 2 -> //cliente
+                            Excluir.excluirCliente(sc);
 
-                        }
+                        case 3 -> //motorista
+                            Excluir.excluirMotorista(sc);
+
                     }
                 }
                 case 0 ->{ //encerrar sistema

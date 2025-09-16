@@ -2,6 +2,7 @@ package org.logisticaentregas.dao;
 
 import org.logisticaentregas.model.Cliente;
 import org.logisticaentregas.util.Conexao;
+import org.logisticaentregas.view.View;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -56,5 +57,43 @@ public class ClienteDAO {
             e.printStackTrace();
         }
         return clientes;
+    }
+
+    public static void deletarCliente(Cliente cliente) throws SQLException{
+        String query = """
+                DELETE FROM cliente
+                WHERE id = ?
+                """;
+        try(Connection conn = Conexao.conectar();
+            PreparedStatement stmt = conn.prepareStatement(query)){
+            conn.setAutoCommit(false);
+
+            if(verificarCliente(conn, cliente)){
+                stmt.setInt(1, cliente.getId());
+                stmt.executeUpdate();
+                conn.commit();
+                View.texto("Cliente excluído com sucesso!");
+            } else {
+                View.texto("Cliente não pode ser excluído.");
+            }
+        }
+    }
+
+    public static boolean verificarCliente(Connection conn, Cliente cliente) throws SQLException{
+        String query = """
+                SELECT cliente_id
+                FROM pedido
+                WHERE cliente_id = ?
+                """;
+        try(PreparedStatement stmt = conn.prepareStatement(query)){
+
+            stmt.setInt(1, cliente.getId());
+            ResultSet rs = stmt.executeQuery();
+            if(rs.next()){
+                return false;
+            } else {
+                return true;
+            }
+        }
     }
 }

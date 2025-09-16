@@ -2,6 +2,7 @@ package org.logisticaentregas.dao;
 
 import org.logisticaentregas.model.Motorista;
 import org.logisticaentregas.util.Conexao;
+import org.logisticaentregas.view.View;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -54,5 +55,45 @@ public class MotoristaDAO {
             e.printStackTrace();
         }
         return motoristas;
+    }
+
+    public static void excluirMotorista(Motorista motorista) throws SQLException{
+        String query = """
+                DELETE FROM motorista
+                WHERE id = ?
+                """;
+        try(Connection conn = Conexao.conectar();
+            PreparedStatement stmt = conn.prepareStatement(query)){
+            conn.setAutoCommit(false);
+
+            if(validarMotorista(conn, motorista)){
+                stmt.setInt(1, motorista.getId());
+                stmt.executeUpdate();
+                conn.commit();
+                View.texto("Motorista excluído com sucesso!");
+            } else {
+                View.texto("Motorista não pode ser excluído.");
+            }
+
+        }
+    }
+
+    public static boolean validarMotorista(Connection conn, Motorista motorista) throws SQLException{
+        String query = """
+                SELECT IF(COUNT(*) = 0, TRUE, FALSE) AS entregues
+                FROM entrega
+                WHERE motorista_id = ? AND status_entrega <> 'ENTREGUE'
+                """;
+        try(PreparedStatement stmt = conn.prepareStatement(query)){
+
+            stmt.setInt(1, motorista.getId());
+            ResultSet rs = stmt.executeQuery();
+
+            if(rs.next()){
+                return rs.getBoolean("entregues");
+            } else {
+                return false;
+            }
+        }
     }
 }

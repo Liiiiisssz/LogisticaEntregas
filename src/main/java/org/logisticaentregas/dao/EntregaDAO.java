@@ -115,7 +115,7 @@ public class EntregaDAO {
         return entregas;
     }
 
-    public static boolean excluirEntrega(Entrega entrega) throws SQLException{
+    public static void excluirEntrega(Entrega entrega) throws SQLException{
         String query = """
                 DELETE FROM entrega
                 WHERE id = ?
@@ -129,10 +129,8 @@ public class EntregaDAO {
                 stmt.executeUpdate();
                 conn.commit();
                 View.texto("Entrega excluida com sucesso!");
-                return true;
             } else {
                 View.texto("Entrega não pode ser excluida.");
-                return false;
             }
         }
     }
